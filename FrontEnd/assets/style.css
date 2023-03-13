@@ -28,6 +28,17 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
+a{
+	text-decoration: none;
+	color: black;
+}
+a:visited{
+	text-decoration: none;
+	color: black;
+}
+a:hover {
+	color:#B1663C;
+}
 body {
 	line-height: 1;
 }
@@ -127,47 +138,30 @@ li:hover {
 }
 
 .projet-filtre {
-	position: relative;
+	display: flex;
+	flex-direction: column;
 }
 
 .filtre {
 	display: flex;
-	flex-direction: column;
-	position: absolute;
-	right: 100px;
-	top: 0;
-	font-size: 20px;
-}
-.filtre div {
-	display: flex;
 	flex-direction: row;
+	margin-bottom:50px;
+	justify-content: center;
+	align-items: center;
 }
-.filtre:hover button{
-	opacity: 1;		
-}
-.filtre:hover .coche{
-	opacity: 1;		
-}
-.filtre button {
-	opacity:0;
-	border: transparent 0px;
-	margin-left:5px;
-	border-radius: 30px;
-	background-color: rgb(252, 195, 255);
+.itemFiltre {
+	border: solid #1D6154 1px ;
+	border-radius: 50px;
+	color:#1D6154;
+	font-weight: bold;
+	margin-right: 10px;
+	padding: 5px 20px 5px 20px;
 	cursor: pointer;
 }
-.coche{
-	border: 0.5px solid black;
-	margin-left:-20px;
-	margin-top:2.5px;
-	width: 10px;
-	height: 10px;
-	box-shadow: 1px;
-	opacity: 0;
-	cursor: pointer;
-}
-.coche:hover {
-	background-color: rgb(159, 115, 159);
+
+.itemFiltre-Selected{
+	color:white;
+	background-color: #1D6154;
 }
 .gallery {
 	width: 100%;
@@ -212,7 +206,371 @@ margin: auto;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
+.headerLogin {
+	width: 100%;
+	height: auto;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	padding: 10px;
+	background-color: black;
+}
+.headerLogin div {
+	padding: 5px 10px 5px 10px;
+	margin-right: 15px;
+	border-radius: 50px;
+	cursor:pointer;
+}
+.edition{
+	color:white;
+	display: flex;
+	flex-direction: row;
+}
+.edition p  {
+	margin-left: 5px;
+}
+.publier {
+	background-color: white;
+	color:black;
+	width: auto;
+	height: auto;
+}
 
+/* 
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+MODAL EDITION 
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+*/
+.modal-Edition {
+	position:fixed;
+	display: none;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rbga(0, 0, 0, 0.8);
+}
+.modal-wrapper {
+	position: relative;
+	display:none;
+	flex-direction: column;
+	background-color: white;
+	width:630px;
+	height: 731px;
+	border-radius: 10px;
+	max-width: calc(100vw - 20px);
+	max-height: calc(100vh - 20px);
+	padding:30px;
+}
+.modal-wrapper h1 {
+	font-family: 'Work Sans';
+	font-size: 26px;
+	font-weight: 400;
+	color:black;
+	margin-left: auto;
+	margin-right: auto;
+}
+.modal-wrapper figure {
+	position: relative;
+}
+.modal-wrapper figure .fa-trash {
+	position: absolute;
+	font-size: 9px;
+	top:10px;
+	background-color: black;
+	border-radius: 2px;
+	color:white;
+	padding:5px;
+	right: 4px;
+	cursor: pointer;
+}
+
+.modal-wrapper figure .fa-up-down-left-right{
+	display: none;
+	position: absolute;
+	color:white;
+	background-color: black;
+	font-size: 9px;
+	padding: 4px;
+	border-radius: 2px;
+	top:10px;
+	right: 25px;
+	cursor: pointer;
+}
+.modal-wrapper figure:hover .fa-up-down-left-right{
+	display: flex;
+}
+.modal-wrapper hr {
+	border-top: 1px solid #B3B3B3;
+	margin-top:50px;
+	width: 560px;
+}
+.div-modal {
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+	display: flex;
+	width: 100%;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+	grid-column-gap: 5px;
+	grid-row-gap: 5px;
+	margin-left:40px;
+}
+.div-modal3 {
+	margin-left: 40px;
+	position: relative;
+	display: flex;
+	flex-direction: row;
+}
+.close {
+    color: black;
+    position: absolute;
+    right: 30px;
+    top:30px;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+	cursor: pointer;
+  }
+.modal-Edition figure {
+	width: 76.61px;
+	height: 102.06px;
+	margin-right: 40px;
+	margin-top:50px
+}
+.modal-Edition figure img {
+	width: 76.61px;
+	height: 102.06px;
+}
+.ajout-photo {
+	margin-top: 30px;
+	background-color: #1D6154;
+	padding: 20px 40px 20px 40px;
+	color: white;
+	border-radius: 50px;
+	margin-left: auto;
+	margin-right: auto;
+}
+.ajout-photo h2 {
+	font-size: 14px;
+	font-weight: 700;
+	color: white;
+	cursor: pointer;
+}
+.suppresion-galerie {
+	color:#D65353;
+	margin-top: 30px;
+	font-size: 14px;
+	font-weight: 400;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+
+/* 
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+MODAL AJOUT IMAGE 
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+*/
+
+.modal-wrapper-ajout {
+	position: relative;
+	display:flex;
+	flex-direction: column;
+	background-color: white;
+	width:630px;
+	height: 731px;
+	border-radius: 10px;
+	max-width: calc(100vw - 20px);
+	max-height: calc(100vh - 20px);
+	padding:30px;
+}
+.modal-wrapper-ajout h1 {
+	font-family: 'Work Sans';
+	font-size: 26px;
+	margin-top:30px;
+	font-weight: 400;
+	color:black;
+	margin-left: auto;
+	margin-right: auto;
+}
+.ajout-image {
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	width: 420px;
+	height: 210px;
+	margin-top:50px;
+	background-color: #e1e6ea;
+	justify-content: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+.ajout-image label img {
+	position: absolute;
+	top: 0;
+	width: 420px;
+	height: 210px;
+	object-fit: cover;
+	border: none;
+	z-index: 2;
+	margin-left: auto;
+	margin-right: auto;
+}
+.ajout-image input {
+	display: none;
+}
+.ajout-image p {
+	margin-top: 10px;
+	display: flex;
+	margin-left: auto;
+	margin-right: auto;
+	justify-content: center;
+}
+.fa-arrow-left-long {
+	position: absolute;
+	top:35px;
+	left: 45px;
+	font-size: 25px;
+	cursor: pointer;
+}
+.fa-image {
+	margin-top: -30px;
+	font-size:75px;
+	display: flex;
+	justify-content: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+.css-ajouter-photo {
+	display: flex;
+	margin-top: 30px;
+	width: 150px;
+	padding: 10px 15px 10px 15px;
+	background-color: #CBD6DC;
+	border-radius: 50px;
+	margin-left: auto;
+	margin-right: auto;
+	justify-content: center;
+}
+.modal-wrapper-ajout form .valider {
+	margin-top:50px;
+	background-color: #A7A7A7;
+	font-family: 'Syne';
+	font-weight: 700;
+	color: white;
+	margin : 2em auto ;
+	width: 180px;
+	text-align: center;
+	border-radius: 60px ;
+	cursor: pointer;
+	margin-left:auto;
+	margin-right: auto;
+}
+.modal-wrapper-ajout hr {
+	border-top: 1px solid #B3B3B3;
+	margin-top:50px;
+	width: 400px;
+	margin-left: auto;
+	margin-right: auto;
+}
+.form-photo  {
+	display: flex;
+	flex-direction: column;
+	margin-top: 30px;
+	margin-left: auto;
+	margin-right: auto;
+}
+.form-input p {
+	margin-top: 20px;
+	margin-left: 125px;
+}
+.form-input input{
+	margin-top: 10px;
+	width: 379px;
+	height: 51px;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	margin-left: auto;
+	margin-right: auto;
+}
+.modal-wrapper-ajout select{
+	margin-top: 10px;
+	width: 379px;
+	height: 51px;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.form-input {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+
+
+
+/*
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+LOG IN
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+*/
+
+.body-login a {
+	text-decoration: none;
+	color:black;
+}
+.body-login a:hover {
+	text-decoration: none;
+	color:#B1663C;
+}
+.section-login{
+	margin-top: 100px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+.section-login h2 {
+	margin-left: auto;
+	margin-right: auto;
+}
+.section-login form {
+	margin-top: 30px;
+	margin-left: auto;
+	margin-right: auto;
+}
+.section-login form p {
+	margin-top: 20px;
+}
+.section-login form input{
+	margin-top: 10px;
+	width: 379px;
+	height: 51px;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+.section-login .connexion{
+	margin-top: 50px;
+}
+.section-login .mdp-oublie {
+	text-decoration: underline solid black;
+	display: flex;
+	justify-content: center;
+}
 input[type="submit"]{
 	font-family: 'Syne';
 	font-weight: 700;
@@ -222,11 +580,30 @@ input[type="submit"]{
 	width: 180px;
 	text-align: center;
 	border-radius: 60px ;
+	cursor: pointer;
 }
 
 footer nav ul {
 	display: flex;
 	justify-content: flex-end;
-	margin: 2em
+	margin: 2em;
 }
 
+.connexion {
+	font-family: 'Syne';
+	font-weight: 700;
+	color: white;
+	background-color: #1D6154;
+	margin : 2em auto ;
+	width: 180px;
+	text-align: center;
+	border-radius: 60px ;
+	cursor: pointer;
+}
+
+#tous, #objets, #appartements, #hotels {
+	display: flex;
+}
+.categorie-1, .categorie-2, .categorie-3 {
+	display: block;
+}

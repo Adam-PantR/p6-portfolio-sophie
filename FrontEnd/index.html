@@ -7,17 +7,31 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
 </head>
 <body>
+	<div class="headerLogin">
+		<a href="#modall-Edition" class="js-modal">
+			<div class="edition">
+				<i class="fa-solid fa-pen-to-square"></i>
+				<p>Mode edition</p>
+			</div>
+		</a>
+		<a href="#modall-Publication" class="js-modal">
+			<div class="publier">
+				<p>Publier les changements</p>
+			</div>
+		</a>
+	</div>
 <header>
 	<h1>Sophie Bluel <span>Architecte d'inteérieur</span></h1>
 	<nav>
 		<ul>
-			<li>projets</li>
-			<li>contact</li>
-			<li>login</li>
+			<li><a href="#">projets</a></li>
+			<li><a href="#contact">contact</a></li>
+			<li><a href="login.html">login</a></li>
 			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 		</ul>
 	</nav>
@@ -38,75 +52,24 @@
 		<div class="projet-filtre">
 			<h2>Mes Projets</h2>
 			<div class="filtre">
-				<p>Filtrer<p>
-				<div>
-					<div class="coche"></div>
-					<button class="btn-trier">Par catégorie</button>
+				<div class="itemFiltre itemFiltre-Selected" id="tous">
+					<p>Tous</p>
 				</div>
-
-				<div class="projects">
-					
+				<div class="itemFiltre" id="objets">
+					<p>Objets</p>
 				</div>
-				
+				<div class="itemFiltre" id="appartements">
+					<p>Appartements</p>
+				</div>
+				<div class="itemFiltre" id="hotels" >
+					<p>Hôtels & Restaurants</p>
+				</div>
 			</div>
-			
 		</div>
 		<div class="gallery">
-			<figure>
-				<img src="assets/images/abajour-tahina.png" alt="Abajour Tahina">
-				<figcaption>Abajour Tahina</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/appartement-paris-v.png" alt="Appartement Paris V">
-				<figcaption>Appartement Paris V</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/restaurant-sushisen-londres.png" alt="Restaurant Sushisen - Londres">
-				<figcaption>Restaurant Sushisen - Londres</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/la-balisiere.png" alt="Villa “La Balisiere” - Port Louis">
-				<figcaption>Villa “La Balisiere” - Port Louis</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/structures-thermopolis.png" alt="Structures Thermopolis">
-				<figcaption>Structures Thermopolis</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/appartement-paris-x.png" alt="Appartement Paris X">
-				<figcaption>Appartement Paris X</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/le-coteau-cassis.png" alt="Pavillon “Le coteau” - Cassis">
-				<figcaption>Pavillon “Le coteau” - Cassis</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/villa-ferneze.png" alt="Villa Ferneze - Isola d’Elba">
-				<figcaption>Villa Ferneze - Isola d’Elba</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/appartement-paris-xviii.png" alt="Appartement Paris XVIII">
-				<figcaption>Appartement Paris XVIII</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/bar-lullaby-paris.png" alt="Bar “Lullaby” - Paris">
-				<figcaption>Bar “Lullaby” - Paris</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/hotel-first-arte-new-delhi.png" alt="Hotel First Arte - New Delhi">
-				<figcaption>Hotel First Arte - New Delhi</figcaption>
-			</figure>
+			
 		</div>
 	</section>
-
-	<div>
-		<input type="text" id="input-name" placeholder="Nom du projet">
-		<button id="btn-get">Get infos</button>
-	</div>
-
-	<div id="outpout">
-
-	</div>
 	<section id="contact">
 		<h2>Contact</h2>
 		<p>Vous avez un projet ? Discutons-en !</p>
@@ -129,8 +92,58 @@
 		</ul>
 	</nav>
 </footer>
-<script src="assets/script.js">
+<aside id="modall-Edition" class="modal-Edition" aria-hidden="true" role="dialog" aria-modal="false">
+	<div class="modal-wrapper">
+		<h1>Galerie Photo</h1>
+		<!-- <span class="close">&times;</span> -->
+		<i class="fa-solid fa-xmark close"></i>
+		<div class="div-modal">
+			
+		</div>
+		<hr>
+		<div class="ajout-photo">
+			<h2>Ajouter une photo</h2>
+		</div>
+		<h2 class="suppresion-galerie">Supprimer la galerie</h2>
+	</div>
 
+	<div class="modal-wrapper-ajout">
+		<i class="fa-sharp fa-solid fa-arrow-left-long js-return"></i>
+		<i class="fa-solid fa-xmark close"></i>
+		<h1>Ajout photo</h1>
+
+		
+		<form id="form-photo">
+			<div class="ajout-image">
+				<input type="file" id="file-1" accept="image/*">
+				<label for="file-1" id="file-1-preview">
+				<i class="fa-regular fa-image"></i>
+				<img id="js-created-img"alt="">
+				<div class="css-ajouter-photo">
+					<span>+ Ajouter photo</span>
+						
+				</div>
+				<p>jpg, png : 4mo max</p>
+				</label>
+		 	</div>
+			<div class="form-input">
+				<p>Titre</p>
+				<input type="title" id="titre-image" name="titre">
+				<p>Catégorie</p>
+				<select type="select" id="categorie" name="categorie">
+					<option valeur="objet" id="categoryId1">Objets</option>
+					<option valeur="appartements" id="categoryId2">Appartements</option>
+					<option valeur="hôtels-restaurant" id="categoryId3">Hôtels & restaurants</option>
+				</select>
+				<hr>
+				<br>
+				<input type="submit" value="Valider" class="valider">
+			</div>
+		</form>
+	</div>
+</aside>
+ 
+<script src="assets/script.js">
 </script>
 </body>
-</html>
+</html> 
