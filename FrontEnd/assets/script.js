@@ -1,42 +1,4 @@
-const loginForm = document.querySelector('#btn-login');
-const urlLogin = "http://localhost:5678/api/users/login";
-
-function login(){
-  e.preventDefault(); // prevent form from submitting normally
-  
-  const email = document.querySelector('#email').value;
-  const password = document.querySelector('#mdp').value;
-  
-  fetch(urlLogin, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization':`Bearer ${token}`,
-    },
-    body: JSON.stringify({email, password})
-  })
-  .then(response => response.json())
-  .then(data => {
-    if(email === 'sophie.bluel@test.tld' && password === 'S0phie'){
-      alert('Vous êtes connecté')
-    }
-    else{
-      alert('Mauvais email ou mot de passe')
-    }
-  })
-  .catch(error => console.error(error));
-}
-
-// const btnLogin = document.querySelector('#btn-login');
-// if(btnLogin){
-//   btnLogin.addEventListener('click', function() {
-//     console.log('en marche')
-// }); 
-// }
-
-
-
-
+// import {token} from "./login.js";
 
 //MODAL
 
@@ -124,8 +86,6 @@ previewBeforeUpload("file-1");
 //   .catch(error => console.error(error));
 // });
 
-let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY3ODcwMTY3MSwiZXhwIjoxNjc4Nzg4MDcxfQ.P7juC9A9-Wu-I1BtAAlXgQ29kI7LtIftavnE8P35fF0";
-
 const envoieForm = document.querySelector('.valider');
 const titreForm = document.querySelector('#titre-image');
 const categorieForm = document.querySelector('#categorie');
@@ -142,38 +102,53 @@ const formData = {
 
 function saveImage() {
   const url = "http://localhost:5678/api/works";
-  const formdata = {
+  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY3ODg4OTM5NCwiZXhwIjoxNjc4OTc1Nzk0fQ.9DJZT5h2OrJVnxlHBaSb9OABsTUtrNF1_qT0U1hJgec';
+  const formdata= {
    "id": 12,
    "titre":titre,
    "imageUrl": image, 
    "categoryId": categorie,
    "userId": 1,
   };
-    const response = fetch(url, {
-      method: "POST",
+  form.onsubmit = async (e) => {
+    e.preventDefault();
+    let response = await fetch(url, {
+      method: 'POST',
       headers: {
-        'Authorization':`Bearer ${token}`,
-        "Accept": "application/json",
-        "Content-Type": "multipart/form-data",     
+       'Authorization':`Bearer ${token}`,
+        "Content-Type": "multipart/form-data", 
       },
-      body: data,
-    })
-    .then(response => {
-      if(!response.ok){
-        throw new Error('Network was not ok') 
-      }
-      console.log("Image saved:", response);
-      console.log(data)
-    })
-    .then(response => {
-      response.json
-      console.log('ca marche')
-    })
-    };
+      body: new FormData(form)
+    });
+    let result = await response.json();
+    alert(result.message);
+    // const response = fetch(url, {
+    //   method: "POST",
+    //   headers: {
+    //     'Authorization':`Bearer ${token}`,
+    //     "Accept": "application/json",
+    //     "Content-Type": "multipart/form-data",     
+    //   },
+    //   body: formdata,
+    // })
+    // .then(response => {
+    //   if(!response.ok){
+    //     throw new Error('Network was not ok') 
+    //   }
+    //   console.log("Image saved:", response);
+    //   console.log(data)
+    // })
+    // .then(response => {
+    //   response.json
+    //   console.log('ca marche')
+    // })
+  }
+};
 
 
 function importImage() {
   const url = "http://localhost:5678/api/works";
+  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY3ODg4OTM5NCwiZXhwIjoxNjc4OTc1Nzk0fQ.9DJZT5h2OrJVnxlHBaSb9OABsTUtrNF1_qT0U1hJgec';
   let reponse = fetch(url, {
      method: "GET",
      headers: {
@@ -205,6 +180,7 @@ function importImage() {
 
   function importImageModal() {
     const url = "http://localhost:5678/api/works";
+    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY3ODg4OTM5NCwiZXhwIjoxNjc4OTc1Nzk0fQ.9DJZT5h2OrJVnxlHBaSb9OABsTUtrNF1_qT0U1hJgec';
     let reponse = fetch(url, {
        method: "GET",
        headers: {
@@ -244,27 +220,27 @@ importImage()
 
 // CREATION DE L APERCU DU PROJET
 
-function newProject() {
+// function newProject() {
 
-   // CREATION DU PROJET DANS LA MODAL
+//    // CREATION DU PROJET DANS LA MODAL
 
-  const divProject = document.querySelector('.div-modal3');
-  const figureElement = document.createElement("figure");
-  const imagesElement = document.createElement("img");
-	imagesElement.src = e.target.files[0];
-  const icone1 = document.createElement('i');
-  icone1.className = ('fa-solid fa-up-down-left-right');
-  const icone2 = document.createElement('i');
-  icone2.className = ('fa-solid fa-trash');
+//   const divProject = document.querySelector('.div-modal3');
+//   const figureElement = document.createElement("figure");
+//   const imagesElement = document.createElement("img");
+// 	imagesElement.src = imagesElement.value;
+//   const icone1 = document.createElement('i');
+//   icone1.className = ('fa-solid fa-up-down-left-right');
+//   const icone2 = document.createElement('i');
+//   icone2.className = ('fa-solid fa-trash');
 
-  divProject.appendChild(figureElement);
-	figureElement.appendChild(imagesElement);
-	figureElement.appendChild(icone1);
-  figureElement.appendChild(icone2);
+//   divProject.appendChild(figureElement);
+// 	figureElement.appendChild(imagesElement);
+// 	figureElement.appendChild(icone1);
+//   figureElement.appendChild(icone2);
 
 
-  console.log('Un projet a été ajouté')
-}
+//   console.log('Un projet a été ajouté')
+// }
 
 
   // CREATION DY PROJET DANS LA PAGE D ACCUEIL
@@ -295,8 +271,8 @@ function galleryNewProject() {
 const send = document.querySelector('.valider');
 send.addEventListener('click', () => {
   saveImage();
-  newProject();
-  galleryNewProject();
+  // newProject();
+  // galleryNewProject();
   
 })
 
