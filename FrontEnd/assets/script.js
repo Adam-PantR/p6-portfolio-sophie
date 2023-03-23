@@ -1,5 +1,6 @@
 // import {token} from "./login.js";
 
+const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY3OTQ3OTI1NSwiZXhwIjoxNjc5NTY1NjU1fQ.SjdvVz9lP7qIn_m6fFjCVrXrsl-jdjFgQGt5Zz60UgU"
 //MODAL
 
 const modal = document.querySelector(".modal-Edition");
@@ -102,7 +103,7 @@ const formData = {
 
 function saveImage() {
   const url = "http://localhost:5678/api/works";
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY3ODg4OTM5NCwiZXhwIjoxNjc4OTc1Nzk0fQ.9DJZT5h2OrJVnxlHBaSb9OABsTUtrNF1_qT0U1hJgec';
+
   const formdata= {
    "id": 12,
    "titre":titre,
@@ -148,7 +149,6 @@ function saveImage() {
 
 function importImage() {
   const url = "http://localhost:5678/api/works";
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY3ODg4OTM5NCwiZXhwIjoxNjc4OTc1Nzk0fQ.9DJZT5h2OrJVnxlHBaSb9OABsTUtrNF1_qT0U1hJgec';
   let reponse = fetch(url, {
      method: "GET",
      headers: {
@@ -164,6 +164,7 @@ function importImage() {
   const accueil = document.querySelector('.gallery');
   const figureGallery = document.createElement('figure');
   figureGallery.className = 'categorie-' + item.categoryId;
+  figureGallery.style.display = "block"
   const imagesGallery = document.createElement('img');
   imagesGallery.src = item.imageUrl;
   const titreImageGallery = document.createElement('figcaption')
@@ -173,6 +174,8 @@ function importImage() {
   figureGallery.appendChild(imagesGallery);
   figureGallery.appendChild(titreImageGallery); 
 
+  console.log(item)
+  
     }
     })
   .catch(error => console.error(error));
@@ -180,7 +183,6 @@ function importImage() {
 
   function importImageModal() {
     const url = "http://localhost:5678/api/works";
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY3ODg4OTM5NCwiZXhwIjoxNjc4OTc1Nzk0fQ.9DJZT5h2OrJVnxlHBaSb9OABsTUtrNF1_qT0U1hJgec';
     let reponse = fetch(url, {
        method: "GET",
        headers: {
@@ -317,60 +319,78 @@ filtre.forEach((itemFiltre, index) => {
   const eventCategorieObjet  = document.querySelector('#objets');
   const eventCategorieAppartements  = document.querySelector('#appartements');
   const eventCategorieHotels  = document.querySelector('#hotels');
-  
+
+  let idCategorie1 = document.querySelectorAll('.categorie-1');
+  let idCategorie2 = document.querySelectorAll('.categorie-2');
+  let idCategorie3 = document.querySelectorAll('.categorie-3');
+
+  let categorie1Lenght = idCategorie1.lenght
+  let categorie3Lenght = idCategorie3.lenght
+
   eventCategorieTous.addEventListener('click', () => {
-    for (var i=0;i<12;i+=1){
-	  idCategorie1[i].style.display  = 'block';
-    idCategorie2[i].style.display  = 'block';
-    idCategorie3[i].style.display  = 'block';
-    idCategorie2[2].style.display  = 'block';
-    idCategorie2[3].style.display  = 'block';
-    idCategorie2[4].style.display  = 'block';
-    idCategorie2[5].style.display  = 'block';
-    idCategorie3[2].style.display  = 'block';
+    for (var i=0;i<5;i+=1){
+    document.querySelectorAll('.categorie-1')[i].style.display  = 'block';
+    document.querySelectorAll('.categorie-2')[i].style.display  = 'block';
+    document.querySelectorAll('.categorie-3')[i].style.display  = 'block';
+    document.querySelectorAll('.categorie-2')[2].style.display  = 'block';
+    document.querySelectorAll('.categorie-2')[3].style.display  = 'block';
+    document.querySelectorAll('.categorie-2')[4].style.display  = 'block';
+    document.querySelectorAll('.categorie-2')[5].style.display  = 'block';
+    document.querySelectorAll('.categorie-3')[2].style.display  = 'block';
     }
+
+    // for (var i=0;i<categorie1Lenght;i+=1){
+    //   document.querySelectorAll('.categorie-1')[i].style.display  = 'block';
+    //   }
+    //   for (var i=0;i<categorie2Lenght;i+=1){
+    //     document.querySelectorAll('.categorie-2')[i].style.display  = 'block';
+    //   document.querySelectorAll('.categorie-3')[i].style.display  = 'block';
+    //   document.querySelectorAll('.categorie-2')[2].style.display  = 'block';
+    //   document.querySelectorAll('.categorie-2')[3].style.display  = 'block';
+    //   document.querySelectorAll('.categorie-2')[4].style.display  = 'block';
+    //   document.querySelectorAll('.categorie-2')[5].style.display  = 'block';
+    //   document.querySelectorAll('.categorie-3')[2].style.display  = 'block';
+      // }
 	});
 
   eventCategorieObjet.addEventListener('click', () => {
     for (var i=0;i<5;i+=1){
-      idCategorie1[i].style.display  = 'block';
-      idCategorie2[i].style.display  = 'none';
-      idCategorie2[2].style.display  = 'none';
-      idCategorie2[3].style.display  = 'none';
-      idCategorie2[4].style.display  = 'none';
-      idCategorie2[5].style.display  = 'none';
-      idCategorie3[i].style.display  = 'none'; 
-      idCategorie3[2].style.display  = 'none';
+    document.querySelectorAll('.categorie-1')[i].style.display = "block"
+    document.querySelectorAll('.categorie-2')[i].style.display = "none"
+    document.querySelectorAll('.categorie-3')[i].style.display = "none"
+    document.querySelectorAll('.categorie-2')[2].style.display  = 'none';
+    document.querySelectorAll('.categorie-2')[3].style.display  = 'none';
+    document.querySelectorAll('.categorie-2')[4].style.display  = 'none';
+    document.querySelectorAll('.categorie-2')[5].style.display  = 'none';
+    document.querySelectorAll('.categorie-3')[2].style.display  = 'none';
     }
 	});
   eventCategorieAppartements.addEventListener('click', () => {
-    for (var i=0;i<12;i+=1){
-      idCategorie1[i].style.display  = 'none';
-      idCategorie2[i].style.display  = 'block';
-      idCategorie2[2].style.display  = 'block';
-      idCategorie2[3].style.display  = 'block';
-      idCategorie2[4].style.display  = 'block';
-      idCategorie2[5].style.display  = 'block';
-      idCategorie3[i].style.display  = 'none';
-      idCategorie3[2].style.display  = 'none';
+    for (var i=0;i<5;i+=1){
+      document.querySelectorAll('.categorie-1')[i].style.display  = 'none';
+      document.querySelectorAll('.categorie-2')[i].style.display  = 'block';
+      document.querySelectorAll('.categorie-2')[2].style.display  = 'block';
+      document.querySelectorAll('.categorie-2')[3].style.display  = 'block';
+      document.querySelectorAll('.categorie-2')[4].style.display  = 'block';
+      document.querySelectorAll('.categorie-2')[5].style.display  = 'block';
+      document.querySelectorAll('.categorie-3')[i].style.display  = 'none';
+      document.querySelectorAll('.categorie-3')[2].style.display  = 'none';
     }
 	});
   eventCategorieHotels.addEventListener('click', () => {
-    for (var i=0;i<12;i+=1){
-      idCategorie1[i].style.display  = 'none';
-      idCategorie2[i].style.display  = 'none';
-      idCategorie3[i].style.display  = 'block';
-      idCategorie2[2].style.display  = 'none';
-      idCategorie2[3].style.display  = 'none';
-      idCategorie2[4].style.display  = 'none';
-      idCategorie2[5].style.display  = 'none';
-      idCategorie3[2].style.display  = 'block';
+    for (var i=0;i<5;i+=1){
+      document.querySelectorAll('.categorie-1')[i].style.display  = 'none';
+      document.querySelectorAll('.categorie-2')[i].style.display  = 'none';
+      document.querySelectorAll('.categorie-3')[i].style.display  = 'block';
+      document.querySelectorAll('.categorie-2')[2].style.display  = 'none';
+      document.querySelectorAll('.categorie-2')[3].style.display  = 'none';
+      document.querySelectorAll('.categorie-2')[4].style.display  = 'none';
+      document.querySelectorAll('.categorie-2')[5].style.display  = 'none';
+      document.querySelectorAll('.categorie-3')[2].style.display  = 'block';
     }
 	});
 
-let idCategorie1 = document.querySelectorAll('.categorie-1');
-let idCategorie2 = document.querySelectorAll('.categorie-2');
-let idCategorie3 = document.querySelectorAll('.categorie-3');
+
 
 function setActiveFiltre() {
 	filtre.forEach(itemFiltre => itemFiltre.classList.remove('itemFiltre-Selected'));

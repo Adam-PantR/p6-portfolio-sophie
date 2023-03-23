@@ -235,7 +235,20 @@ margin: auto;
 	width: auto;
 	height: auto;
 }
-
+.menu-Modifier{
+	display: flex;
+	flex-direction: row;
+	text-align: center;
+	margin: 0 auto 0 auto;
+}
+.modifier {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-top:-25px ;
+	margin-left: 25px;
+	cursor: pointer;
+}
 /* 
 -------------------------------------------------------------------------------------------------------------------------------------------
 
