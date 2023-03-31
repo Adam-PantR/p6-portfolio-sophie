@@ -97,9 +97,33 @@ const titre = titreForm.value;
 const image = imgInput.value;
 const categorie = categorieForm.value;
 
-const formData = {
 
-}
+function testSaveImage() {
+  const imageUrl = "https://example.com/image.jpg"; // L'URL de l'image à envoyer
+  const endpointUrl = "htpp://localhost:5678/api/categories"; // L'URL de l'API pour télécharger l'image
+  // Créer une instance de l'objet FormData
+  const formData = new FormData();
+  // Ajouter l'image à FormData en utilisant l'URL de l'image
+  formData.append("imageUrl", imageUrl);
+  // Créer une requête POST avec la méthode fetch
+    fetch(endpointUrl, {
+      method: "POST",
+      body: formData
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error("Erreur lors de la requête");
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log("Réponse de l'API :", data);
+    })
+    .catch(error => {
+      console.error("Erreur :", error);
+    });
+  }
+
 
 function saveImage() {
   const url = "http://localhost:5678/api/works";
@@ -272,7 +296,7 @@ function galleryNewProject() {
 
 const send = document.querySelector('.valider');
 send.addEventListener('click', () => {
-  saveImage();
+  testSaveImage();
   // newProject();
   // galleryNewProject();
   
