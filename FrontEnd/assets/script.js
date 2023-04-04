@@ -1,6 +1,5 @@
-// import {token} from "./login.js";
-
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY3OTQ3OTI1NSwiZXhwIjoxNjc5NTY1NjU1fQ.SjdvVz9lP7qIn_m6fFjCVrXrsl-jdjFgQGt5Zz60UgU"
+const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY4MDUyMDAyNywiZXhwIjoxNjgwNjA2NDI3fQ.1jt1FRpSdIug6VwklIj-74sKbk1uuH74QUPnWNZeHAE"
+// const axios = require('axios');
 //MODAL
 
 const modal = document.querySelector(".modal-Edition");
@@ -56,73 +55,48 @@ previewBeforeUpload("file-1");
 
 // RECUPERATION DES DONNEES DU FORMULAIRE ET ENVOIE
 
-
-// form.addEventListener('submit', (event) => {
-//   event.preventDefault(); // prevent default form submission behavior
-  
-//   const formData = new FormData(form); // get form data
-  
-//   fetch('http://localhost:5678/api/works', {
-//     method: 'POST',
-//     header: {
-//       'accept': 'application/json',
-//       'Content-Type': 'multipart/form-data',
-//     },
-//     body: formData
-//   })
-//   .then(response => response.json())
-//   .then(data => {
-//     // do something with the API response data
-//     console.log(data);
-    
-//     // access form values in JavaScript
-//     // const imgInput = document.querySelector('file-1').src;
-//     const titre = form.elements.titre.value;
-//     const categorie = form.elements.categorie.value;
-    
-//     // do something with the form values
-//     console.log( titre, categorie);
-
-//   })
-//   .catch(error => console.error(error));
-// });
-
 const envoieForm = document.querySelector('.valider');
 const titreForm = document.querySelector('#titre-image');
 const categorieForm = document.querySelector('#categorie');
 const form = document.getElementById('form-photo');
 const imgInput = document.getElementById('file-1');
 
+
 const titre = titreForm.value;
 const image = imgInput.value;
 const categorie = categorieForm.value;
 
+const imageCreated = document.getElementById('js-created-img');
+const imageCreatedSrc = imageCreated.src;
+const imageCreatedSrcValue = imageCreatedSrc.value;
 
-function testSaveImage() {
-  const imageUrl = "https://example.com/image.jpg"; // L'URL de l'image à envoyer
-  const endpointUrl = "htpp://localhost:5678/api/categories"; // L'URL de l'API pour télécharger l'image
-  // Créer une instance de l'objet FormData
-  const formData = new FormData();
-  // Ajouter l'image à FormData en utilisant l'URL de l'image
-  formData.append("imageUrl", imageUrl);
-  // Créer une requête POST avec la méthode fetch
-    fetch(endpointUrl, {
-      method: "POST",
-      body: formData
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error("Erreur lors de la requête");
-      }
-      return response.json();
-    })
-    .then(data => {
-      console.log("Réponse de l'API :", data);
-    })
-    .catch(error => {
-      console.error("Erreur :", error);
-    });
-  }
+// function testSaveImage() {
+
+
+//   const imageUrl = "https://example.com/image.jpg"; // L'URL de l'image à envoyer
+//   const endpointUrl = "htpp://localhost:5678/api/categories"; // L'URL de l'API pour télécharger l'image
+//   // Créer une instance de l'objet FormData
+//   const formData = new FormData();
+//   // Ajouter l'image à FormData en utilisant l'URL de l'image
+//   formData.append("imageUrl", imageUrl);
+//   // Créer une requête POST avec la méthode fetch
+//     fetch(endpointUrl, {
+//       method: "POST",
+//       body: formData
+//     })
+//     .then(response => {
+//       if (!response.ok) {
+//         throw new Error("Erreur lors de la requête");
+//       }
+//       return response.json();
+//     })
+//     .then(data => {
+//       console.log("Réponse de l'API :", data);
+//     })
+//     .catch(error => {
+//       console.error("Erreur :", error);
+//     });
+//   }
 
 
 function saveImage() {
@@ -141,7 +115,7 @@ function saveImage() {
       method: 'POST',
       headers: {
        'Authorization':`Bearer ${token}`,
-        "Content-Type": "multipart/form-data", 
+       "Content-Type": "multipart/form-data", 
       },
       body: new FormData(form)
     });
@@ -167,8 +141,62 @@ function saveImage() {
     //   response.json
     //   console.log('ca marche')
     // })
+    }
   }
-};
+
+  // --------------------------------------------------------------------------------------------------------------------------------------------------
+
+  // AXIOS
+
+  // --------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+function saveImageAxios() {
+  
+
+   // Récupérer les valeurs des champs du formulaire
+
+  const form = document.getElementById('form-photo');
+  const titreForm = document.querySelector('#titre-image').value;
+  const categorieForm = document.querySelector('#categorie').value;
+  const imgInput = document.getElementById('file-1').files[0];
+
+  // Création d'un objet FormData contenant l'image
+  const formData = new FormData();
+  formData.append('titre', titreForm);
+  formData.append('categoryId', categorieForm)
+  formData.append('image', imgInput);
+  // Envoi de la requête POST vers l'URL souhaitée
+  fetch('http://localhost:5678/api/works', {
+    method:'POST',
+    body: formData,
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      'Authorization':`Bearer ${token}`,
+      'X-Custom-Header': 'custom-value'
+    }
+  })
+  .then(response => {
+    if(!response.ok){
+      throw new Error("Erreur de la requete")
+    }
+    return response.json();
+  })
+  .then((response) => {
+    console.log(response.data);
+    alert('Image saved successfully');
+  }).then(data => {
+    console.log("Reponse de l'API : ", data);
+  }).catch((error) => {
+    console.error(error);
+ });
+}
+ 
+
+
+
+
 
 
 function importImage() {
@@ -198,7 +226,6 @@ function importImage() {
   figureGallery.appendChild(imagesGallery);
   figureGallery.appendChild(titreImageGallery); 
 
-  console.log(item)
   
     }
     })
@@ -296,35 +323,12 @@ function galleryNewProject() {
 
 const send = document.querySelector('.valider');
 send.addEventListener('click', () => {
-  testSaveImage();
+  saveImageAxios()
+  saveImage();
   // newProject();
   // galleryNewProject();
   
 })
-
-
-
-
-
-
-// const data = fetch('http://localhost:5678/api/works', {
-//   method:'POST',
-//   headers: {
-//     "Content-Type": 'application/json',
-//   },
-//   body: JSON.stringify(),
-// })
-
-// envoieForm.onclick =  function addData() {
-//   data.index = data.length+1;
-//   data.id = data.length+1;
-//   data.title = titreForm.value;
-//   data.imageUrl = imgInput.value;
-//   data.categoryId = categorieForm.id;
-//   data.userId = 1;
-//   data.category =  categorieForm.value;
-// }
-
 
 
 // MISE EN PLACE DES ACTFS AU FILTRE
