@@ -8,6 +8,7 @@ const urlLogin = "http://localhost:5678/api/users/login";
 var token;
 
 
+
 function login() {
   let emailLogin = 'sophie.bluel@test.tld';
   let passwordLogin = 'S0phie';
@@ -41,6 +42,7 @@ function getToken(){
   .then(data => {
     if(email === emailLogin && password === passwordLogin){
       token = data["token"];     
+      
     }
     else{
       alert('Token invalide')
@@ -55,7 +57,10 @@ const btnLogin = document.querySelector('#btn-login');
 if(btnLogin){
   btnLogin.addEventListener('click', function() {   
     login()
-    getToken()  
-    const token = getToken()
+    getToken()
+    sessionStorage.removeItem("token",)  
+    sessionStorage.setItem("token", token)
 }); 
 }
+
+

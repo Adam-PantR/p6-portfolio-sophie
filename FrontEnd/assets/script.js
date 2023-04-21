@@ -1,4 +1,4 @@
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY4MDUyMDAyNywiZXhwIjoxNjgwNjA2NDI3fQ.1jt1FRpSdIug6VwklIj-74sKbk1uuH74QUPnWNZeHAE"
+var token = sessionStorage.getItem("token");
 // const axios = require('axios');
 //MODAL
 
@@ -172,8 +172,8 @@ function saveImageAxios() {
     method:'POST',
     body: formData,
     headers: {
+      'Authorization':`Barear ${token}`,
       'Content-Type': 'multipart/form-data',
-      'Authorization':`Bearer ${token}`,
       'X-Custom-Header': 'custom-value'
     }
   })
@@ -225,8 +225,6 @@ function importImage() {
   accueil.appendChild(figureGallery);
   figureGallery.appendChild(imagesGallery);
   figureGallery.appendChild(titreImageGallery); 
-
-  
     }
     })
   .catch(error => console.error(error));
