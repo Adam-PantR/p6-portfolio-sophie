@@ -1,4 +1,5 @@
-var token = sessionStorage.getItem("token");
+// var token = sessionStorage.getItem("token");
+const token =  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY4MjE1NTYyNCwiZXhwIjoxNjgyMjQyMDI0fQ.UyHv_Gqz8tqARISGdqU3hWeXjnVbym1oKJj95v3HVAI";
 // const axios = require('axios');
 //MODAL
 
@@ -53,150 +54,27 @@ function previewBeforeUpload(id){
 previewBeforeUpload("file-1");
 
 
-// RECUPERATION DES DONNEES DU FORMULAIRE ET ENVOIE
-
-const envoieForm = document.querySelector('.valider');
-const titreForm = document.querySelector('#titre-image');
-const categorieForm = document.querySelector('#categorie');
-const form = document.getElementById('form-photo');
-const imgInput = document.getElementById('file-1');
-
-
-const titre = titreForm.value;
-const image = imgInput.value;
-const categorie = categorieForm.value;
-
-const imageCreated = document.getElementById('js-created-img');
-const imageCreatedSrc = imageCreated.src;
-const imageCreatedSrcValue = imageCreatedSrc.value;
-
-// function testSaveImage() {
-
-
-//   const imageUrl = "https://example.com/image.jpg"; // L'URL de l'image à envoyer
-//   const endpointUrl = "htpp://localhost:5678/api/categories"; // L'URL de l'API pour télécharger l'image
-//   // Créer une instance de l'objet FormData
-//   const formData = new FormData();
-//   // Ajouter l'image à FormData en utilisant l'URL de l'image
-//   formData.append("imageUrl", imageUrl);
-//   // Créer une requête POST avec la méthode fetch
-//     fetch(endpointUrl, {
-//       method: "POST",
-//       body: formData
-//     })
-//     .then(response => {
-//       if (!response.ok) {
-//         throw new Error("Erreur lors de la requête");
-//       }
-//       return response.json();
-//     })
-//     .then(data => {
-//       console.log("Réponse de l'API :", data);
-//     })
-//     .catch(error => {
-//       console.error("Erreur :", error);
-//     });
-//   }
-
 
 function saveImage() {
   const url = "http://localhost:5678/api/works";
-
-  const formdata= {
-   "id": 12,
-   "titre":titre,
-   "imageUrl": image, 
-   "categoryId": categorie,
-   "userId": 1,
-  };
-  form.onsubmit = async (e) => {
-    e.preventDefault();
-    let response = await fetch(url, {
+  form.onsubmit = async (formData) => {
+  formData.preventDefault();
+  try {
+    const response = await fetch(url, {
       method: 'POST',
       headers: {
-       'Authorization':`Bearer ${token}`,
-       "Content-Type": "multipart/form-data", 
+        'Accept':'application/json',
+       'Authorization':`Bearer ${token}`, 
       },
-      body: new FormData(form)
+      body: formData,
     });
-    let result = await response.json();
-    alert(result.message);
-    // const response = fetch(url, {
-    //   method: "POST",
-    //   headers: {
-    //     'Authorization':`Bearer ${token}`,
-    //     "Accept": "application/json",
-    //     "Content-Type": "multipart/form-data",     
-    //   },
-    //   body: formdata,
-    // })
-    // .then(response => {
-    //   if(!response.ok){
-    //     throw new Error('Network was not ok') 
-    //   }
-    //   console.log("Image saved:", response);
-    //   console.log(data)
-    // })
-    // .then(response => {
-    //   response.json
-    //   console.log('ca marche')
-    // })
-    }
+    if (response.status == 201) { alert ("Un  projet a été ajouté")};
+  } 
+  catch (error){
+    console.log(error);
   }
-
-  // --------------------------------------------------------------------------------------------------------------------------------------------------
-
-  // AXIOS
-
-  // --------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-
-function saveImageAxios() {
-  
-
-   // Récupérer les valeurs des champs du formulaire
-
-  const form = document.getElementById('form-photo');
-  const titreForm = document.querySelector('#titre-image').value;
-  const categorieForm = document.querySelector('#categorie').value;
-  const imgInput = document.getElementById('file-1').files[0];
-
-  // Création d'un objet FormData contenant l'image
-  const formData = new FormData();
-  formData.append('titre', titreForm);
-  formData.append('categoryId', categorieForm)
-  formData.append('image', imgInput);
-  // Envoi de la requête POST vers l'URL souhaitée
-  fetch('http://localhost:5678/api/works', {
-    method:'POST',
-    body: formData,
-    headers: {
-      'Authorization':`Barear ${token}`,
-      'Content-Type': 'multipart/form-data',
-      'X-Custom-Header': 'custom-value'
-    }
-  })
-  .then(response => {
-    if(!response.ok){
-      throw new Error("Erreur de la requete")
-    }
-    return response.json();
-  })
-  .then((response) => {
-    console.log(response.data);
-    alert('Image saved successfully');
-  }).then(data => {
-    console.log("Reponse de l'API : ", data);
-  }).catch((error) => {
-    console.error(error);
- });
+  }
 }
- 
-
-
-
-
 
 
 function importImage() {
@@ -317,16 +195,28 @@ function galleryNewProject() {
 
 
 
-
-
 const send = document.querySelector('.valider');
-send.addEventListener('click', () => {
-  saveImageAxios()
-  saveImage();
-  // newProject();
-  // galleryNewProject();
+if(send){ 
+  send.addEventListener('click', function() {
+
+    const titreForm = document.querySelector('#titre-image').value;
+    const categorieForm = document.querySelector('#categorie').value;
+    const imgInput = document.getElementById('file-1').files[0];
+    console.log(titreForm)
+    console.log(categorieForm)
+    console.log(imgInput)
+    
   
-})
+    const formData = new FormData();
+    formData.append("image", imgInput);
+    formData.append("title", titreForm);
+    formData.append("category", categorieForm);
+    // saveImage();
+    })
+}
+
+  
+
 
 
 // MISE EN PLACE DES ACTFS AU FILTRE
@@ -355,35 +245,24 @@ filtre.forEach((itemFiltre, index) => {
 
   eventCategorieTous.addEventListener('click', () => {
     for (var i=0;i<5;i+=1){
-    document.querySelectorAll('.categorie-1')[i].style.display  = 'block';
+      document.querySelectorAll('.categorie-1')[0].style.display = "block"
     document.querySelectorAll('.categorie-2')[i].style.display  = 'block';
-    document.querySelectorAll('.categorie-3')[i].style.display  = 'block';
+    document.querySelectorAll('.categorie-3')[0].style.display  = 'block';
     document.querySelectorAll('.categorie-2')[2].style.display  = 'block';
     document.querySelectorAll('.categorie-2')[3].style.display  = 'block';
     document.querySelectorAll('.categorie-2')[4].style.display  = 'block';
     document.querySelectorAll('.categorie-2')[5].style.display  = 'block';
+    document.querySelectorAll('.categorie-3')[1].style.display  = 'block';
     document.querySelectorAll('.categorie-3')[2].style.display  = 'block';
     }
-
-    // for (var i=0;i<categorie1Lenght;i+=1){
-    //   document.querySelectorAll('.categorie-1')[i].style.display  = 'block';
-    //   }
-    //   for (var i=0;i<categorie2Lenght;i+=1){
-    //     document.querySelectorAll('.categorie-2')[i].style.display  = 'block';
-    //   document.querySelectorAll('.categorie-3')[i].style.display  = 'block';
-    //   document.querySelectorAll('.categorie-2')[2].style.display  = 'block';
-    //   document.querySelectorAll('.categorie-2')[3].style.display  = 'block';
-    //   document.querySelectorAll('.categorie-2')[4].style.display  = 'block';
-    //   document.querySelectorAll('.categorie-2')[5].style.display  = 'block';
-    //   document.querySelectorAll('.categorie-3')[2].style.display  = 'block';
-      // }
 	});
 
   eventCategorieObjet.addEventListener('click', () => {
     for (var i=0;i<5;i+=1){
-    document.querySelectorAll('.categorie-1')[i].style.display = "block"
+    document.querySelectorAll('.categorie-1')[0].style.display = "block"
     document.querySelectorAll('.categorie-2')[i].style.display = "none"
-    document.querySelectorAll('.categorie-3')[i].style.display = "none"
+    document.querySelectorAll('.categorie-3')[0].style.display = "none"
+    document.querySelectorAll('.categorie-3')[1].style.display = "none"
     document.querySelectorAll('.categorie-2')[2].style.display  = 'none';
     document.querySelectorAll('.categorie-2')[3].style.display  = 'none';
     document.querySelectorAll('.categorie-2')[4].style.display  = 'none';
@@ -393,25 +272,29 @@ filtre.forEach((itemFiltre, index) => {
 	});
   eventCategorieAppartements.addEventListener('click', () => {
     for (var i=0;i<5;i+=1){
-      document.querySelectorAll('.categorie-1')[i].style.display  = 'none';
+      document.querySelectorAll('.categorie-1')[0].style.display  = 'none';
+      document.querySelectorAll('.categorie-1')[1].style.display  = 'none';
       document.querySelectorAll('.categorie-2')[i].style.display  = 'block';
       document.querySelectorAll('.categorie-2')[2].style.display  = 'block';
       document.querySelectorAll('.categorie-2')[3].style.display  = 'block';
       document.querySelectorAll('.categorie-2')[4].style.display  = 'block';
       document.querySelectorAll('.categorie-2')[5].style.display  = 'block';
-      document.querySelectorAll('.categorie-3')[i].style.display  = 'none';
+      document.querySelectorAll('.categorie-3')[0].style.display  = 'none';
+      document.querySelectorAll('.categorie-3')[1].style.display  = 'none';
       document.querySelectorAll('.categorie-3')[2].style.display  = 'none';
     }
 	});
   eventCategorieHotels.addEventListener('click', () => {
     for (var i=0;i<5;i+=1){
-      document.querySelectorAll('.categorie-1')[i].style.display  = 'none';
+      document.querySelectorAll('.categorie-1')[0].style.display  = 'none';
+      document.querySelectorAll('.categorie-1')[1].style.display  = 'none';
       document.querySelectorAll('.categorie-2')[i].style.display  = 'none';
-      document.querySelectorAll('.categorie-3')[i].style.display  = 'block';
       document.querySelectorAll('.categorie-2')[2].style.display  = 'none';
       document.querySelectorAll('.categorie-2')[3].style.display  = 'none';
       document.querySelectorAll('.categorie-2')[4].style.display  = 'none';
       document.querySelectorAll('.categorie-2')[5].style.display  = 'none';
+      document.querySelectorAll('.categorie-3')[0].style.display  = 'block';
+      document.querySelectorAll('.categorie-3')[1].style.display  = 'block';
       document.querySelectorAll('.categorie-3')[2].style.display  = 'block';
     }
 	});
@@ -433,5 +316,3 @@ function setActiveFiltre() {
   });
 
   //Ajout de la possibilité de supprimer les projets 
-
-  const deleteProjet = document.querySelector('.fa-trash')
