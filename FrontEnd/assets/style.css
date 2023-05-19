@@ -545,6 +545,9 @@ LOG IN
 -------------------------------------------------------------------------------------------------------------------------------------------
 */
 
+.logout {
+	display: none;
+}
 .body-login a {
 	text-decoration: none;
 	color:black;
@@ -616,9 +619,12 @@ footer nav ul {
 	cursor: pointer;
 }
 
-#tous, #objets, #appartements, #hotels {
+#tous, #1, #2, #3 {
 	display: flex;
 }
 .categorie-1, .categorie-2, .categorie-3 {
 	display: block;
+}
+.displayOff {
+	display:none;
 }

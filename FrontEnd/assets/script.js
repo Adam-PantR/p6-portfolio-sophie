@@ -1,6 +1,5 @@
-// var token = sessionStorage.getItem("token");
-const token =  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY4MjE1NTYyNCwiZXhwIjoxNjgyMjQyMDI0fQ.UyHv_Gqz8tqARISGdqU3hWeXjnVbym1oKJj95v3HVAI";
-// const axios = require('axios');
+const token = localStorage.getItem('token');
+
 //MODAL
 
 const modal = document.querySelector(".modal-Edition");
@@ -11,30 +10,32 @@ const modalReturn = document.getElementsByClassName("js-return")[0];
 const modalAjout = document.getElementsByClassName("modal-wrapper-ajout")[0];
 const modalProjet = document.getElementsByClassName("modal-wrapper")[0];
 const ajoutPhoto = document.getElementsByClassName("ajout-photo")[0];
+const figureGallery = document.createElement('figure');
+
 
 modalTrigger.onclick = function() {
-modal.style.display = "flex";
-modal.style.background = "rgba(0, 0, 0, 0.8)"
-}
-ajoutPhoto.onclick = function() {
-  modalProjet.style.display =  "none";
-  modalAjout.style.display = "flex";
-}
-closeModal.onclick = function() {
-  modal.style.display = "none";
-}
-closeModal2.onclick = function() {
-  modal.style.display = "none";
-}
-modalReturn.onclick = function() {
-  modalAjout.style.display = "none";
-  modalProjet.style.display =  "flex";
-}
-
-window.onclick = function(event) {
-  if (event.target == modal) {
-	modal.style.display = "none";
+  modal.style.display = "flex";
+  modal.style.background = "rgba(0, 0, 0, 0.8)"
   }
+  ajoutPhoto.onclick = function() {
+    modalProjet.style.display =  "none";
+    modalAjout.style.display = "flex";
+  }
+  closeModal.onclick = function() {
+    modal.style.display = "none";
+  }
+  closeModal2.onclick = function() {
+    modal.style.display = "none";
+  }
+  modalReturn.onclick = function() {
+    modalAjout.style.display = "none";
+    modalProjet.style.display =  "flex";
+  }
+
+  window.onclick = function(event) {
+    if (event.target == modal) {
+    modal.style.display = "none";
+    }
 }
 
 // PREVIEW DES BOUTTONS
@@ -54,32 +55,70 @@ function previewBeforeUpload(id){
 previewBeforeUpload("file-1");
 
 
+function createImage() {
 
-function saveImage() {
+  let titreForm = document.querySelector('#titre-image');
+  let categorieForm = document.querySelector('#categorie');
+  let imgInput = document.getElementById('file-1');
+  if (titreForm.value==''){
+    alert('Il  faut ajouter un titre')
+    return
+  }
+  if (categorieForm.value==''){
+    alert('Il faut ajouter unecatégorie')
+    return
+  }
+  if (imgInput.value==''){
+   alert('Il faut ajouter une image')
+   return
+  }
+
+  console.log(titreForm.value)
+  console.log(categorieForm.value)
+  console.log(imgInput.files[0])
+  
+
+  let formData = new FormData();
+  formData.append("image", imgInput.files[0])
+  formData.append("title", titreForm.value)
+  formData.append("category", categorieForm.value)
+
+
   const url = "http://localhost:5678/api/works";
-  form.onsubmit = async (formData) => {
-  formData.preventDefault();
-  try {
-    const response = await fetch(url, {
+
+    fetch(url, {
       method: 'POST',
       headers: {
-        'Accept':'application/json',
-       'Authorization':`Bearer ${token}`, 
+       'Authorization':'Bearer ' + token
       },
       body: formData,
+    })
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error('erreur lors du transfert');
+    })
+    .then(data => {
+      console.log(data);
+      // document.querySelector('.fa-xmark close').click();
+      importImage();
+      importImageModal();
+  
+    })
+    .catch(error => {
+      console.error(error);
     });
-    if (response.status == 201) { alert ("Un  projet a été ajouté")};
-  } 
-  catch (error){
-    console.log(error);
-  }
-  }
-}
+    }
+
+
+const accueil = document.querySelector('.gallery');
+const modalProjets = document.querySelector('.div-modal');
 
 
 function importImage() {
   const url = "http://localhost:5678/api/works";
-  let reponse = fetch(url, {
+  fetch(url, {
      method: "GET",
      headers: {
        'Authorization':`Bearer ${token}`,
@@ -88,29 +127,31 @@ function importImage() {
    })
   .then(reponse => reponse.json())
   .then(data => {
-    console.table(data);
-    for (const item of data) {
+    accueil.innerHTML='';
+    data.forEach(works => {
+  
       // CREATION DES PROJETS A LA PAGE D ACCUEIL
-  const accueil = document.querySelector('.gallery');
+
   const figureGallery = document.createElement('figure');
-  figureGallery.className = 'categorie-' + item.categoryId;
+  figureGallery.className = 'categorie-' + works.categoryId;
   figureGallery.style.display = "block"
   const imagesGallery = document.createElement('img');
-  imagesGallery.src = item.imageUrl;
+  imagesGallery.src = works.imageUrl;
   const titreImageGallery = document.createElement('figcaption')
-  titreImageGallery.innerText = item.title;
+  titreImageGallery.innerText = works.title;
 
   accueil.appendChild(figureGallery);
   figureGallery.appendChild(imagesGallery);
   figureGallery.appendChild(titreImageGallery); 
     }
-    })
-  .catch(error => console.error(error));
-  }
+    )
+  })}
+
+
 
   function importImageModal() {
     const url = "http://localhost:5678/api/works";
-    let reponse = fetch(url, {
+    fetch(url, {
        method: "GET",
        headers: {
          'Authorization':`Bearer ${token}`,
@@ -119,10 +160,10 @@ function importImage() {
      })
     .then(reponse => reponse.json())
     .then(data => {
-      for (const item of data) {
+      modalProjets.innerHTML='';
+      data.forEach(item => {
 
    // CREATION DES PROJETS DANS LA MODAL
-   const modalProjets = document.querySelector('.div-modal');
    const figureModal = document.createElement('figure');
    const imagesModal = document.createElement('img');
    imagesModal.src = item.imageUrl;
@@ -130,6 +171,7 @@ function importImage() {
    iconeImagesModal1.className = ('fa-solid fa-up-down-left-right');
    const iconeImagesModal2 = document.createElement('i');
    iconeImagesModal2.className = ('fa-solid fa-trash');
+   iconeImagesModal2.setAttribute('data-id', item.id);
    const editerImageModal = document.createElement('figcaption')
    editerImageModal.innerText = 'éditer';
  
@@ -139,88 +181,174 @@ function importImage() {
    figureModal.appendChild(iconeImagesModal1);
    figureModal.appendChild(iconeImagesModal2); 
    figureModal.appendChild(editerImageModal);  
-  }
+  })
 })
-.catch(error => console.error(error));
+
 }
     
 importImageModal()
 importImage()
 
-// CREATION DE L APERCU DU PROJET
 
-// function newProject() {
-
-//    // CREATION DU PROJET DANS LA MODAL
-
-//   const divProject = document.querySelector('.div-modal3');
-//   const figureElement = document.createElement("figure");
-//   const imagesElement = document.createElement("img");
-// 	imagesElement.src = imagesElement.value;
-//   const icone1 = document.createElement('i');
-//   icone1.className = ('fa-solid fa-up-down-left-right');
-//   const icone2 = document.createElement('i');
-//   icone2.className = ('fa-solid fa-trash');
-
-//   divProject.appendChild(figureElement);
-// 	figureElement.appendChild(imagesElement);
-// 	figureElement.appendChild(icone1);
-//   figureElement.appendChild(icone2);
-
-
-//   console.log('Un projet a été ajouté')
-// }
-
-
-  // CREATION DY PROJET DANS LA PAGE D ACCUEIL
-function galleryNewProject() {
-  const accueil = document.querySelector('.gallery');
-  const figureGallery = document.createElement('figure');
-  figureGallery.className = ('new-project');
-  const imagesGallery = document.createElement('img');
-  let imageSRC = document.getElementById('js-created-img').value;
-  imagesGallery.className = ('new-image');
-  imagesGallery.src = imageSRC;
-  const titreImageGallery = document.createElement('figcaption')
-  titreImageGallery.innerText = titreForm.value;
+const divModal = document.querySelector('.div-modal');
+divModal.addEventListener('click', function (event) {
+    if (event.target.closest('.fa-trash')) {
+      const boutonSupprimer = event.target.closest('.fa-trash');
+      const deleteById = boutonSupprimer.getAttribute('data-id');
+      console.log(deleteById);
+              fetch(`http://localhost:5678/api/works/${deleteById}`, {
+                  method: 'DELETE',
+                  headers: {
+                      'Authorization': 'Bearer ' + token
+                  },
+                  body: deleteById
+              })
+              .then(response => {
+                  if (response.ok) {
+                      console.log('Element supprimé');
+                  } else {
+                      throw new Error('Erreur lors de la suppression');
+                  }
+                //   return response.json();
+              })
+              .then(data => {
+                  console.log(data);
+                  importImageModal()
+                  importImage()
+              })
+              .catch(error => {
+                  console.error(error);
+              });
+            }
+      }
+  );
 
 
-  accueil.appendChild(figureGallery);
-  figureGallery.appendChild(imagesGallery);
-  figureGallery.appendChild(titreImageGallery); 
-  
-    console.log('un projet a été ajouté à la gallerie');
- 
-}
+const send = document.querySelector('.valider')
+// send.addEventListener('click', createImage )
+
+send.addEventListener('click',function (event){
+  event.preventDefault()
+createImage()
+
+});
 
 
 
-const send = document.querySelector('.valider');
-if(send){ 
-  send.addEventListener('click', function() {
 
-    const titreForm = document.querySelector('#titre-image').value;
-    const categorieForm = document.querySelector('#categorie').value;
-    const imgInput = document.getElementById('file-1').files[0];
-    console.log(titreForm)
-    console.log(categorieForm)
-    console.log(imgInput)
+
+
+
+
+const filtreDiv = document.querySelector('.filtre'); 
+const eventCategorieTous  =document.querySelector('#tous');
+const eventCategorieObjet  = document.querySelector('.objets');
+const eventCategorieAppartements  = document.querySelector('.appartements');
+const eventCategorieHotels  = document.querySelector('.hotels');
+
+let idCategorie1 = document.querySelectorAll('.categorie-1');
+let idCategorie2 = document.querySelectorAll('.categorie-2');
+let idCategorie3 = document.querySelectorAll('.categorie-3');
+let idCategorieEmpty = document.querySelectorAll('.displayOff')
+
+
+const tableauDonnees = [];
+
+// Faire une requête fetch pour récupérer les données
+
+  // fetch('http://localhost:5678/api/works')
+  // .then(response => response.json())
+  // .then(data => {
+  //   data.forEach(element => {
+  //     tableauDonnees.push(element);
+  //   });
+  // // const elementsFiltresObjets = tableauDonnees.filter(element => element.categoryId === 1);
+  // // console.log(elementsFiltresObjets);
+  // // const elementsFiltresAppartements = tableauDonnees.filter(element => element.categoryId === 2);
+  // // console.log(elementsFiltresAppartements);
+  // // const elementsFiltresHotels = tableauDonnees.filter(element => element.categoryId === 3);
+  // // console.log(elementsFiltresHotels);
+  // })
+  // .catch(error => console.error(error));
+
+  // console.log(tableauDonnees)
+  // const elementsFiltresObjets = tableauDonnees.filter(element => element.categoryId === 1);
+  // elementsFiltresObjets.forEach(element => {
+  //   console.log(element.categoryId);
     
+  // });
+
+  function createWorkElement(works) {
+    const figureGallery = document.createElement('figure');
+    const imagesGallery = document.createElement('img');
+    imagesGallery.src = works.imageUrl;
+    const titreImageGallery = document.createElement('figcaption')
+    titreImageGallery.innerText = works.title;
   
-    const formData = new FormData();
-    formData.append("image", imgInput);
-    formData.append("title", titreForm);
-    formData.append("category", categorieForm);
-    // saveImage();
-    })
-}
+    accueil.appendChild(figureGallery);
+    figureGallery.appendChild(imagesGallery);
+    figureGallery.appendChild(titreImageGallery); 
+    return figureGallery;
+  }
 
+  function afficherProjects() {
+    fetch('http://localhost:5678/api/works')
+      .then(response => response.json())
+      .then(projects => {
+        accueil.innerHTML = '';
+        projects.forEach(works => {
+          const figureParCategorie = createWorkElement(works);
+          accueil.appendChild(figureParCategorie);
+        });
+      });
+  }
+
+
+  function filtrerProjetsCategorie(categorie) {
+    fetch('http://localhost:5678/api/works')
+      .then(response => response.json())
+      .then(data => {
+        const projetsFiltres = data.filter(function (works) {
+          return works.category.name === categorie;
+        });
+        accueil.innerHTML = '';
+        projetsFiltres.forEach(works => {
+          const figureParCategorie = createWorkElement(works);
+          accueil.appendChild(figureParCategorie);
+        });
+      })
+      .catch(error => {
+        console.log(error, "Erreur lors de la récupération des works");
+      });
+  }
+
+  afficherProjects();
+
+// Afficher tous les projets sur le bouton TOUS
+  eventCategorieTous.addEventListener('click', afficherProjects)
   
+  fetch('http://localhost:5678/api/categories')
+    .then(response => response.json())
+    .then(categories => {
 
+  categories.forEach(categorie => {
+    // Creation et filtre des projets
+    const boutonCategorie = document.createElement('div');
+      boutonCategorie.classList.add('itemFiltre');
+      boutonCategorie.classList.add('categorie');
+      boutonCategorie.innerText = categorie.name;
+      filtreDiv.appendChild(boutonCategorie);
+    boutonCategorie.addEventListener('click', function () {
+      filtrerProjetsCategorie(categorie.name);
+    });
 
+  });
+})
+.catch(error => {
+  console.log(error, "Erreur lors de la récupération des categories");
+});
 
 // MISE EN PLACE DES ACTFS AU FILTRE
-
 let currentFiltre = 0;
 const filtre = document.querySelectorAll('.itemFiltre');
 
@@ -231,88 +359,9 @@ filtre.forEach((itemFiltre, index) => {
 	});
   });
 
-  const eventCategorieTous  =document.querySelector('#tous');
-  const eventCategorieObjet  = document.querySelector('#objets');
-  const eventCategorieAppartements  = document.querySelector('#appartements');
-  const eventCategorieHotels  = document.querySelector('#hotels');
-
-  let idCategorie1 = document.querySelectorAll('.categorie-1');
-  let idCategorie2 = document.querySelectorAll('.categorie-2');
-  let idCategorie3 = document.querySelectorAll('.categorie-3');
-
-  let categorie1Lenght = idCategorie1.lenght
-  let categorie3Lenght = idCategorie3.lenght
-
-  eventCategorieTous.addEventListener('click', () => {
-    for (var i=0;i<5;i+=1){
-      document.querySelectorAll('.categorie-1')[0].style.display = "block"
-    document.querySelectorAll('.categorie-2')[i].style.display  = 'block';
-    document.querySelectorAll('.categorie-3')[0].style.display  = 'block';
-    document.querySelectorAll('.categorie-2')[2].style.display  = 'block';
-    document.querySelectorAll('.categorie-2')[3].style.display  = 'block';
-    document.querySelectorAll('.categorie-2')[4].style.display  = 'block';
-    document.querySelectorAll('.categorie-2')[5].style.display  = 'block';
-    document.querySelectorAll('.categorie-3')[1].style.display  = 'block';
-    document.querySelectorAll('.categorie-3')[2].style.display  = 'block';
-    }
-	});
-
-  eventCategorieObjet.addEventListener('click', () => {
-    for (var i=0;i<5;i+=1){
-    document.querySelectorAll('.categorie-1')[0].style.display = "block"
-    document.querySelectorAll('.categorie-2')[i].style.display = "none"
-    document.querySelectorAll('.categorie-3')[0].style.display = "none"
-    document.querySelectorAll('.categorie-3')[1].style.display = "none"
-    document.querySelectorAll('.categorie-2')[2].style.display  = 'none';
-    document.querySelectorAll('.categorie-2')[3].style.display  = 'none';
-    document.querySelectorAll('.categorie-2')[4].style.display  = 'none';
-    document.querySelectorAll('.categorie-2')[5].style.display  = 'none';
-    document.querySelectorAll('.categorie-3')[2].style.display  = 'none';
-    }
-	});
-  eventCategorieAppartements.addEventListener('click', () => {
-    for (var i=0;i<5;i+=1){
-      document.querySelectorAll('.categorie-1')[0].style.display  = 'none';
-      document.querySelectorAll('.categorie-1')[1].style.display  = 'none';
-      document.querySelectorAll('.categorie-2')[i].style.display  = 'block';
-      document.querySelectorAll('.categorie-2')[2].style.display  = 'block';
-      document.querySelectorAll('.categorie-2')[3].style.display  = 'block';
-      document.querySelectorAll('.categorie-2')[4].style.display  = 'block';
-      document.querySelectorAll('.categorie-2')[5].style.display  = 'block';
-      document.querySelectorAll('.categorie-3')[0].style.display  = 'none';
-      document.querySelectorAll('.categorie-3')[1].style.display  = 'none';
-      document.querySelectorAll('.categorie-3')[2].style.display  = 'none';
-    }
-	});
-  eventCategorieHotels.addEventListener('click', () => {
-    for (var i=0;i<5;i+=1){
-      document.querySelectorAll('.categorie-1')[0].style.display  = 'none';
-      document.querySelectorAll('.categorie-1')[1].style.display  = 'none';
-      document.querySelectorAll('.categorie-2')[i].style.display  = 'none';
-      document.querySelectorAll('.categorie-2')[2].style.display  = 'none';
-      document.querySelectorAll('.categorie-2')[3].style.display  = 'none';
-      document.querySelectorAll('.categorie-2')[4].style.display  = 'none';
-      document.querySelectorAll('.categorie-2')[5].style.display  = 'none';
-      document.querySelectorAll('.categorie-3')[0].style.display  = 'block';
-      document.querySelectorAll('.categorie-3')[1].style.display  = 'block';
-      document.querySelectorAll('.categorie-3')[2].style.display  = 'block';
-    }
-	});
-
-
-
 function setActiveFiltre() {
 	filtre.forEach(itemFiltre => itemFiltre.classList.remove('itemFiltre-Selected'));
 	filtre[currentFiltre].classList.add('itemFiltre-Selected');
 }
   
   setActiveFiltre();
-
-  fetch('http://localhost:5678/api/categories')
-  .then(response => response.json())
-  .then(data => {
-   console.log(data[0])
-
-  });
-
-  //Ajout de la possibilité de supprimer les projets 

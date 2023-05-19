@@ -31,7 +31,8 @@
 		<ul>
 			<li><a href="#">projets</a></li>
 			<li><a href="#contact">contact</a></li>
-			<li><a href="login.html">login</a></li>
+			<li class="login"><a href="login.html">login</a></li>
+			<li class="logout">logout</li>
 			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 		</ul>
 	</nav>
@@ -60,16 +61,7 @@
 			
 			<div class="filtre">
 				<div class="itemFiltre itemFiltre-Selected" id="tous">
-					<p>Tous</p>
-				</div>
-				<div class="itemFiltre" id="objets">
-					<p>Objets</p>
-				</div>
-				<div class="itemFiltre" id="appartements">
-					<p>Appartements</p>
-				</div>
-				<div class="itemFiltre" id="hotels" >
-					<p>Hôtels & Restaurants</p>
+					Tous
 				</div>
 			</div>
 		</div>
@@ -141,13 +133,14 @@
 				<input type="text" id="titre-image" name="titre">
 				<p>Catégorie</p>
 				<select type="select" id="categorie" name="categorie">
-					<option valeur="objet" id="categoryId1">Objets</option>
-					<option valeur="appartements" id="categoryId2">Appartements</option>
-					<option valeur="hôtels-restaurant" id="categoryId3">Hôtels & restaurants</option>
+					<option value></option>
+					<option value="1" id="categoryId1">Objets</option>
+					<option value="2" id="categoryId2">Appartements</option>
+					<option value="3" id="categoryId3">Hôtels & restaurants</option>
 				</select>
 				<hr>
 				<br>
-				<button type="submit" value="Valider" class="valider">Valider</button>
+				<div type="submit" class="valider">Valider</div>
 			</div>
 		</form>
 	</div>
