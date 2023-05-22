@@ -341,7 +341,7 @@ const tableauDonnees = [];
     boutonCategorie.addEventListener('click', function () {
       filtrerProjetsCategorie(categorie.name);
     });
-
+    
   });
 })
 .catch(error => {
@@ -350,7 +350,22 @@ const tableauDonnees = [];
 
 // MISE EN PLACE DES ACTFS AU FILTRE
 let currentFiltre = 0;
-const filtre = document.querySelectorAll('.itemFiltre');
+
+const filtreDeux = filtreDiv.querySelectorAll("div");
+const filtre = filtreDiv.querySelectorAll("div");
+
+window.addEventListener('load', function() {
+  const filtre = filtreDiv.querySelectorAll("div");
+  
+  setTimeout(function() {
+    // Code à exécuter après le délai spécifié
+    const filtre = filtreDiv.querySelectorAll("div");
+    console.log(filtre)
+    return filtre
+  }, 2000); // Délai en millisecondes 
+
+});
+
 
 filtre.forEach((itemFiltre, index) => {
 	itemFiltre.addEventListener('click', () => {
@@ -365,3 +380,26 @@ function setActiveFiltre() {
 }
   
   setActiveFiltre();
+
+
+  // Gestion d'affichage au Login / Logout
+
+
+const setLogin = document.querySelector(".login");
+const setLogout = document.querySelector(".logout")
+
+function viderToken(){
+  localStorage.removeItem('token');
+  setLogout.style.display = 'none';
+  setLogin.style.display = 'block';
+  location.reload();
+ }
+
+ if (token !== null) {
+  setLogout.style.display = 'block';
+  setLogin.style.display = 'none';
+ }
+
+ setLogout.addEventListener('click', function() {
+  viderToken();
+ });
