@@ -8,20 +8,20 @@ const urlLogin = "http://localhost:5678/api/users/login";
 
 
 
-function login() {
-  let emailLogin = 'sophie.bluel@test.tld';
-  let passwordLogin = 'S0phie';
-  const email = document.querySelector('#email').value;
-  const password = document.querySelector('#mdp').value;
+// function login() {
+//   let emailLogin = 'sophie.bluel@test.tld';
+//   let passwordLogin = 'S0phie';
+//   const email = document.querySelector('#email').value;
+//   const password = document.querySelector('#mdp').value;
   
-  if(email === emailLogin && password === passwordLogin){
-  alert('Vous êtes connecté');
-  }
-  else{
-    alert('Mauvais email ou mot de passe')
-  }
+//   if(email === emailLogin && password === passwordLogin){
+//   alert('Vous êtes connecté');
+//   }
+//   else{
+//     alert('Mauvais email ou mot de passe')
+//   }
   
-}
+// }
 
 
 // GET TOKEN FONCTIONNEL
@@ -37,7 +37,12 @@ function getToken(){
   })
   .then(response => {
     if (!response.ok) {
+      alert('Erreur dans l’identifiant ou le mot de passe');
       throw new Error('Erreur dans l’identifiant ou le mot de passe');
+      
+    }
+    else{
+      alert('Vous êtes connecté')
     }
     return response.json();
   })
@@ -60,7 +65,7 @@ const token = localStorage.getItem('token');
 const btnLogin = document.querySelector('#btn-login');
 if(btnLogin){
   btnLogin.addEventListener('click', function() {   
-    login()
+    // login()
     getToken()   
 }); 
 }
